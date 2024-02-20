@@ -2,13 +2,11 @@ FROM ghcr.io/oddbird/pyjs:py3.9-node16
 
 ARG BUILD_ENV=development
 ARG PROD_ASSETS
-ARG OMNIOUT_TOKEN
 WORKDIR /app
 
 # Env setup:
 ENV PYTHONPATH /app
 ENV DJANGO_SETTINGS_MODULE config.settings.production
-ENV OMNIOUT_TOKEN ${OMNIOUT_TOKEN}
 
 # Install sfdx
 RUN npm install --location=global sfdx-cli --ignore-scripts
@@ -22,7 +20,6 @@ RUN if [ "${BUILD_ENV}" = "development" ] ; then \
     fi
 
 # JS client setup:
-COPY ./.npmrc .npmrc
 COPY ./package.json package.json
 COPY ./yarn.lock yarn.lock
 RUN yarn install --check-files
